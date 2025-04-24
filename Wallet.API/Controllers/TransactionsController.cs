@@ -2,9 +2,11 @@
 using Wallet.Application.Transactions.Commands;
 using Wallet.Application.Transactions.Handlers;
 using Wallet.Application.Transactions.Responses;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Wallet.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class TransactionsController : ControllerBase
@@ -18,7 +20,7 @@ public class TransactionsController : ControllerBase
         _getTransactionsHandler = getTransactionsHandler;
 
     }
-
+    [Authorize(Roles = "User,Admin")]
     [HttpPost("transfer")]
     public async Task<IActionResult> Transfer([FromBody] TransferRequest request)
     {
@@ -42,6 +44,7 @@ public class TransactionsController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<TransactionResponse>>> GetByWalletId([FromQuery] int walletId)
     {
         var result = await _getTransactionsHandler.HandleAsync(walletId);
