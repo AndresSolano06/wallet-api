@@ -113,4 +113,4 @@ WalletSolution/
 ## 👨‍💻 Autor
 
 **Andrés Camilo Solano Pantoja**  
-[GitHub](https://github.com/AndresSolano06) | [LinkedIn](https://linkedin.com)
+[GitHub](https://github.com/AndresSolano06) | [LinkedIn](https://www.linkedin.com/in/andres-camilo-solano-pantoja-13b52819a/)
