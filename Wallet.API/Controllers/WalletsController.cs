@@ -29,7 +29,12 @@ public class WalletsController : ControllerBase
     {
         try
         {
+            Console.WriteLine("[CreateWallet] Entrando al método.");
+            Console.WriteLine($"[CreateWallet] Payload recibido: Name={request.Name}, DocumentId={request.DocumentId}");
+
             var result = await _createWalletHandler.HandleAsync(request);
+            Console.WriteLine($"[CreateWallet] Wallet creada: ID={result.Id}, Balance={result.Balance}");
+
             return CreatedAtAction(nameof(GetWalletById), new { id = result.Id }, result);
         }
         catch (Exception ex)

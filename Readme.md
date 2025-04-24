@@ -1,41 +1,41 @@
-# Wallet API - Prueba Técnica Backend Developer
+# 💰 Wallet API - Prueba Técnica Backend Developer
 
-API REST desarrollada en .NET 8 con Clean Architecture para gestionar billeteras digitales, movimientos y autenticación con JWT. Cumple con todos los requisitos establecidos en la prueba técnica.
+API REST desarrollada en .NET 8 siguiendo el patrón de arquitectura limpia. Esta aplicación permite la gestión de billeteras digitales y sus movimientos, con autenticación basada en JWT y pruebas automatizadas.
 
 ---
 
-## 🌐 Tecnologías usadas
+## 🚀 Tecnologías utilizadas
 
-- .NET 8
+- [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - ASP.NET Core Web API
-- Entity Framework Core
-- SQL Server
-- xUnit + Moq + FluentAssertions
-- JWT para autenticación segura
-- Swagger para documentación interactiva
+- Entity Framework Core (SQL Server e InMemory)
+- JWT (Json Web Token)
+- xUnit, Moq, FluentAssertions
+- Swagger (OpenAPI)
+- Clean Architecture
 
 ---
 
-## ✅ Funcionalidades completadas
+## ✅ Funcionalidades
 
-- Crear billetera (`POST /api/wallets`) 🔐 Solo Admin
-- Obtener billetera por ID (`GET /api/wallets/{id}`) 🔐
-- Recargar billetera (`POST /api/wallets/{id}/recharge`) 🔐 Solo Admin
-- Transferir saldo entre billeteras (`POST /api/transactions/transfer`) 🔐
-- Obtener historial de movimientos (`GET /api/transactions?walletId=`) 🌐 Público
-- Login de usuario con JWT (`POST /api/auth/login`) 🌐 Público
-- Autenticación con JWT funcional con uso de roles (`Admin`, `User`)
+| Endpoint                                     | Método | Requiere Auth | Roles Permitidos | Estado |
+|----------------------------------------------|--------|----------------|------------------|--------|
+| `/api/wallets`                                | POST   | ✅              | Admin            | ✅     |
+| `/api/wallets/{id}`                           | GET    | ✅              | Admin, User      | ✅     |
+| `/api/wallets/{id}/recharge`                  | POST   | ✅              | Admin            | ✅     |
+| `/api/transactions/transfer`                  | POST   | ✅              | Admin, User      | ✅     |
+| `/api/transactions?walletId={id}`             | GET    | ❌              | Público          | ✅     |
+| `/api/auth/login`                             | POST   | ❌              | Público          | ✅     |
 
 ---
 
-## 🔐 Seguridad con JWT
+## 🔐 Autenticación y Autorización
 
-- Implementación completa de autenticación con tokens JWT firmados
-- Middleware configurado para validar emisor, audiencia y firma
-- Botón "Authorize" funcional en Swagger para pegar tokens JWT
-- Usuarios ficticios sembrados en memoria para pruebas
+- **JWT configurado con roles (`Admin`, `User`)**
+- El token se firma con una clave secreta definida en `appsettings.json`
+- Swagger configurado con botón `Authorize` para pruebas
 
-### 🔐 Credenciales de prueba
+### Usuario de prueba
 
 ```json
 {
@@ -44,113 +44,73 @@ API REST desarrollada en .NET 8 con Clean Architecture para gestionar billeteras
 }
 ```
 
-### 🔒 Endpoints protegidos con `[Authorize]`
-- `POST /api/wallets` (solo Admin)
-- `GET /api/wallets/{id}`
-- `POST /api/wallets/{id}/recharge` (solo Admin)
-- `POST /api/transactions/transfer`
-
-### 🌐 Endpoints públicos con `[AllowAnonymous]`
-- `GET /api/transactions?walletId=`
-- `POST /api/auth/login`
+> El endpoint `/api/auth/login` genera el token que se debe copiar en Swagger como:  
+> `Bearer <token>`
 
 ---
 
-## 🧪 Pruebas unitarias
+## 🧪 Pruebas Automatizadas
 
-- Ejecutadas con `xUnit`, `Moq` y `FluentAssertions`
+- **Unitarias**: Handlers de lógica de negocio
+- **Integración**: Endpoints reales usando base de datos en memoria
+- **Librerías usadas**: xUnit, Moq, FluentAssertions
+
+### Ejecutar pruebas
 
 ```bash
 dotnet test Wallet.Tests --logger "console;verbosity=detailed"
 ```
 
-### Handlers testeados:
-- Transferencias con saldo suficiente e insuficiente
-- Creación de billeteras con y sin datos válidos
-- Obtención de billeteras por ID (existente / no existente)
-- Recarga de billeteras (validación de monto, billetera inexistente, éxito)
-
-Logs detallados dentro de los tests para validar estados y excepciones.
-
 ---
 
-## 📄 Cómo ejecutar el proyecto
+## 🧭 Instrucciones de ejecución
 
-### 1. Clonar el repositorio
 ```bash
 git clone https://github.com/AndresSolano06/wallet-api.git
 cd WalletSolution
-```
-
-### 2. Restaurar paquetes
-```bash
 dotnet restore
-```
-
-### 3. Aplicar migraciones y crear la BD
-```bash
 dotnet ef database update --project Wallet.Infrastructure --startup-project Wallet.API
-```
-
-### 4. Ejecutar la API
-```bash
 dotnet run --project Wallet.API
 ```
 
-### 5. Acceder a Swagger
-```
-http://localhost:<puerto>/swagger
-```
-
-### 6. Obtener token de autenticación
-1. Ir a `POST /api/auth/login`
-2. Usar las credenciales de prueba
-3. Copiar el token JWT del `response`
-4. Presionar 🔐 Authorize en Swagger
-5. Pegar el token con el formato:
-```
-Bearer eyJhbGciOi...
-```
+Luego accede a: [http://localhost:{puerto}/swagger](http://localhost:{puerto}/swagger)
 
 ---
 
-## 📦 Estructura del proyecto
+## 📁 Estructura del Proyecto
 
 ```
 WalletSolution/
-├── Wallet.API/              // Controladores y configuración Swagger + JWT
-├── Wallet.Application/      // Casos de uso, comandos, validaciones, handlers
-├── Wallet.DomainLayer/      // Entidades del dominio
-├── Wallet.Infrastructure/   // EF Core, DbContext, Repositorios
-├── Wallet.Tests/            // Tests unitarios
-└── WalletSolution.sln       // Solución principal
+├── Wallet.API/              # API y configuración principal
+├── Wallet.Application/      # Casos de uso (handlers, comandos)
+├── Wallet.DomainLayer/      # Entidades de dominio
+├── Wallet.Infrastructure/   # Persistencia con EF Core
+├── Wallet.Tests/            # Pruebas unitarias e integración
+└── WalletSolution.sln       # Archivo de solución
 ```
 
 ---
 
-## 📁 Otros archivos importantes
+## 📦 Extras
 
-- `.gitignore` preparado para entorno .NET
-- `README.md` con instrucciones completas
-- Swagger con JWT configurado visualmente
-- Semilla de usuarios embebida (`UserSeed.cs`)
+- `.gitignore` optimizado para proyectos .NET
+- Swagger UI con JWT integrado
+- Base de datos SQL Server (migraciones incluidas)
+- Roles con políticas para endpoints protegidos
+- Endpoint extra: `recharge` para asignar saldo a una billetera
 
 ---
 
-## 📅 Estado de la entrega
+## ✅ Estado de entrega
 
-✅ Entrega completada 100% conforme a los requisitos del documento oficial de la prueba técnica
-✅ Todos los endpoints, validaciones y pruebas implementadas
-✅ Seguridad con JWT y Swagger integrados
-✅ Recarga de billeteras agregada como funcionalidad adicional
+- ✔ Todos los requisitos del PDF cumplidos
+- ✔ Funcionalidades adicionales agregadas (recarga + roles)
+- ✔ Pruebas completas (unitarias + integración)
+- ✔ Readme detallado y documentación Swagger incluida
 
 ---
 
 ## 👨‍💻 Autor
 
-Desarrollado por **Andrés Camilo Solano Pantoja**
-
-Prueba Técnica - Backend Developer en .NET
-
-Para cualquier duda técnica, puedes contactarme.
-
+**Andrés Camilo Solano Pantoja**  
+[GitHub](https://github.com/AndresSolano06) | [LinkedIn](https://linkedin.com)

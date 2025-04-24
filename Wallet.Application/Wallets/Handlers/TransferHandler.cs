@@ -35,14 +35,12 @@ public class TransferHandler
         if (fromWallet.Balance < request.Amount)
             throw new InvalidOperationException("Saldo insuficiente en la billetera origen.");
 
-        // Actualizar saldos
         fromWallet.Balance -= request.Amount;
         fromWallet.UpdatedAt = DateTime.UtcNow;
 
         toWallet.Balance += request.Amount;
         toWallet.UpdatedAt = DateTime.UtcNow;
 
-        // Registrar movimientos
         var now = DateTime.UtcNow;
 
         await _transactionRepository.AddAsync(new Transaction

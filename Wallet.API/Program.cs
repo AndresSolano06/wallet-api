@@ -56,7 +56,6 @@ public class Program
         builder.Services.AddScoped<TransferHandler>();
         builder.Services.AddScoped<RechargeWalletHandler>();
         builder.Services.AddScoped<GetTransactionsHandler>();
-
         builder.Services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", opt =>
             {
