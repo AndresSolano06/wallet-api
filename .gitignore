@@ -1,0 +1,33 @@
+# .NET build
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Visual Studio Code
+.vscode/
+
+#Visual Studio
+.vs/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# dotnet secrets
+secrets.json
+
+# Test results
+TestResults/
+*.coverage
+*.coveragexml
+
+# EF migrations snapshot (opcional)
+*MigrationsSnapshot.cs
